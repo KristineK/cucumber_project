@@ -1,0 +1,9 @@
+Feature: Google Test
+
+  Background:
+    Given I navigate to url "google.com"
+
+  Scenario: Verify "I’m feeling Lucky"
+
+    When I have agreed to conditions
+    Then I should see "I’m feeling Lucky" button
