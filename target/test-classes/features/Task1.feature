@@ -10,7 +10,7 @@ Feature: enter a Number
       | number | result |
       |  64    | Square root of 64 is 8.00 |
 
-    Scenario Outline: Big
+    Scenario Outline: Error
       When I enter "<number>"
       And  I click submit
       Then I see an error "<message>"
@@ -20,11 +20,5 @@ Feature: enter a Number
         |  4     | Number is too small |
         |  terg  | Please enter a number |
 
-  Scenario Outline: Small
-    When I enter "<number>"
-    And  I click submit
-    Then I see an error "<message>"
-    Examples:
-      | number | message |
-      |  4     | Number is too small |
+
 

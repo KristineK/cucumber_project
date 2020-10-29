@@ -5,10 +5,12 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
 import java.util.Map;
@@ -157,7 +159,7 @@ public class SampleSteps {
         assertEquals(message, driver.findElement(By.id("ch1_error")).getText());
     }
 
-    @Given("^I open \"([^\"]*)\" page$")
+    @Given("^I open People page$")
     public void iOpenPage() throws Throwable {
         driver.get("https://kristinek.github.io/site/tasks/list_of_people.html");
 
@@ -165,21 +167,58 @@ public class SampleSteps {
 
     @And("^I click add$")
     public void iClickAdd() {
-        WebElement button = driver.findElement(By.tagName("modal_button"));
+        WebElement button = driver.findElement(By.id("modal_button"));
         button.click();
     }
 
     @When("^I click Add Person$")
     public void iClickAddPerson() {
-        WebElement button = driver.findElement(By.tagName("addPersonBtn"));
+        WebElement button = driver.findElement(By.id("addPersonBtn"));
         button.click();
 
     }
 
-    @Then("^I can see new Person in the list$")
-    public void iCanSeeNewPersonInTheList() {
-        assertTrue(driver.findElement(By.cssSelector("#person3 > div")).isDisplayed());
+    @Then("^I can see new Person in the list with name \"([^\"]*)\" and surname \"([^\"]*)\"$")
+    public void iCanSeeNewPersonInTheList( String personName, String personSurname ) {
+     List<WebElement> people =  driver.findElements(By.className("w3-xlarge"));
+     WebElement lastPerson = people.get(people.size()-1);
+     String name = lastPerson.findElement(By.className("name")).getText();
+     String surname = lastPerson.findElement(By.className("surname")).getText();
+     assertEquals(personName, name);
+     assertEquals(personSurname, surname);
+    }
 
+    @And("^I enter surname: \"([^\"]*)\"$")
+    public void iEnterSurname(String surname) throws Throwable {
+        driver.findElement(By.id("surname")).sendKeys(surname);
+    }
+
+    @And("^I choose Date of Birth: \"([^\"]*)\"$")
+    public void iChooseDateOfBirth(String date) throws Throwable {
+        driver.findElement(By.id("dob")).sendKeys(date);
+    }
+
+    @And("^I choose Language$")
+    public void iChooseLanguage(List<String> languages) {
+        for (String language : languages) {
+            driver.findElement(By.id(language.toLowerCase())).click();
+        }
+    }
+
+    @And("^I choose Gender: \"([^\"]*)\"$")
+    public void iChooseGender(String gender) throws Throwable {
+        driver.findElement(By.id(gender.toLowerCase())).click();
+    }
+
+    @And("^I choose Employee status: \"([^\"]*)\"$")
+    public void iChooseEmployeeStatus(String occupation) throws Throwable {
+        Select status = new Select(driver.findElement(By.id("status")));
+        status.selectByVisibleText(occupation);
+    }
+
+    @And("^I enter job: \"([^\"]*)\"$")
+    public void iEnterJob(String job) throws Throwable {
+        driver.findElement(By.id("job")).sendKeys(job);
     }
 }
 
