@@ -134,7 +134,7 @@ public class SampleSteps {
     public void iEnter(String arg0) throws Throwable {
         WebElement numberField = driver.findElement(By.id("numb"));
         numberField.click();
-        numberField.sendKeys (arg0);
+        numberField.sendKeys(arg0);
     }
 
     @And("^I click submit$")
@@ -144,11 +144,11 @@ public class SampleSteps {
     }
 
     @Then("^I see a \"([^\"]*)\"$")
-    public void iSeeA(String result) throws Throwable  {
+    public void iSeeA(String result) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         Alert alert = driver.switchTo().alert();
         System.out.println(alert.getText());
-        assertEquals( result,alert.getText());
+        assertEquals(result, alert.getText());
         alert.accept();
     }
 
@@ -179,13 +179,13 @@ public class SampleSteps {
     }
 
     @Then("^I can see new Person in the list with name \"([^\"]*)\" and surname \"([^\"]*)\"$")
-    public void iCanSeeNewPersonInTheList( String personName, String personSurname ) {
-     List<WebElement> people =  driver.findElements(By.className("w3-xlarge"));
-     WebElement lastPerson = people.get(people.size()-1);
-     String name = lastPerson.findElement(By.className("name")).getText();
-     String surname = lastPerson.findElement(By.className("surname")).getText();
-     assertEquals(personName, name);
-     assertEquals(personSurname, surname);
+    public void iCanSeeNewPersonInTheList(String personName, String personSurname) {
+        List<WebElement> people = driver.findElements(By.className("w3-xlarge"));
+        WebElement lastPerson = people.get(people.size() - 1);
+        String name = lastPerson.findElement(By.className("name")).getText();
+        String surname = lastPerson.findElement(By.className("surname")).getText();
+        assertEquals(personName, name);
+        assertEquals(personSurname, surname);
     }
 
     @And("^I enter surname: \"([^\"]*)\"$")
@@ -219,6 +219,66 @@ public class SampleSteps {
     @And("^I enter job: \"([^\"]*)\"$")
     public void iEnterJob(String job) throws Throwable {
         driver.findElement(By.id("job")).sendKeys(job);
+    }
+
+    @When("^I press Edit button$")
+    public void iPressEditButton() {
+        List<WebElement> pencils = driver.findElements(By.className("fa-pencil"));
+        pencils.get(0).click();
+    }
+
+
+    @Then("^I will be redirected to person's page$")
+    public void iWillBeRedirectedToPersonSPage() {
+        driver.get("https://kristinek.github.io/site/tasks/enter_a_new_person.html?id=1");
+    }
+
+
+    @And("^I click edit$")
+    public void iClickEdit() {
+        WebElement button = driver.findElement(By.id("modal_button"));
+        button.click();
+    }
+
+    @When("^I press Delete button$")
+    public void iPressDeleteButton() {
+        List<WebElement> deleteBtn = driver.findElements(By.className("closebtn"));
+        deleteBtn.get(0).click();
+    }
+
+
+    @And("^see the changes in People list$")
+    public void seeTheChangesInPeopleList() {
+        WebElement changes = driver.findElement(By.xpath("//*[text()='Antonio']"));
+        System.out.println(changes.getText() + " is here");
+    }
+
+
+    @And("^I press 'Clear all' button$")
+    public void iPressClearAllButton() {
+        WebElement clear = driver.findElement(By.xpath("//button[text()=\"Clear all fields\"]"));
+        clear.click();
+
+    }
+
+    @Given("^I reset People list$")
+    public void iResetPeopleList() {
+        WebElement reset = driver.findElement(By.xpath("//button[text()=\"Reset List\"]"));
+        reset.click();
+    }
+
+    @Then("^I can see that name field is empty$")
+    public void iCanSeeThatNameFieldIsEmpty() {
+        WebElement nameField = driver.findElement(By.id("name"));
+        assertEquals("", nameField.getText());
+    }
+
+    @Then("^I can see that People list contains (\\d+) items$")
+    public void iCanSeeThatPeopleListContainsItems(int expectedCount) {
+        List<WebElement> people = driver.findElements(By.className("name"));
+        int count = people.size();
+        assertEquals(expectedCount, count);
+        System.out.println("Number of people:" + count);
     }
 }
 
